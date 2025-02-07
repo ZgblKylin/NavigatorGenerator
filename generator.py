@@ -270,6 +270,14 @@ def GenerateHtml(template: str) -> str:
     cur = FindLine('@images@')
     template[cur] = ',\n'.join([f"'{image.strip()}'" for image in images])
 
+    cur = FindLine('@footer@')
+    if config['lang'].startswith('zh'):
+        template[cur] = template[cur].replace(
+            '@footer@', '由 ZgblKylin/NavigatorGenerator 强力驱动')
+    else:
+        template[cur] = template[cur].replace(
+            '@footer@', 'Powered by ZgblKylin/NavigatiorGenerator')
+
     return '\n'.join(template)
 
 
