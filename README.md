@@ -9,7 +9,7 @@ Static HTML navigation page generator inspired by [soulteary/flare](https://gith
 Features:
 
 - Customizable by yaml config file.
-- Blazing fast with static HTML and lazy-loading images.
+- Blazing fast with static HTML.
 - Auto adapt to dark mode.
 - Responsive layout.
 - Emoji and Material Designe Icons support.
