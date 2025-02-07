@@ -376,32 +376,7 @@
       }
     });
 
-    function yieldToMain() {
-      if (globalThis.scheduler?.yield) {
-        return scheduler.yield();
-      }
-      return new Promise(resolve => {
-        setTimeout(resolve, 0);
-      });
-    }
-
-    async function loadImages(deadline = 10) {
-      let lastYield = performance.now();
-      const IMAGES = [
-        // '@images@'
-      ]
-      for (let i = 0; i < IMAGES.length; i++) {
-        document.getElementById(`image_${i}`).innerHTML = IMAGES[i];
-        if (performance.now() - lastYield > deadline) {
-          await yieldToMain();
-          lastYield = performance.now();
-        }
-      }
-    }
-
-    window.onload = function () {
-      loadImages();
-    };
+    // @loadimages@
   </script>
 </body>
 

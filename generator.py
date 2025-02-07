@@ -122,7 +122,7 @@ def LoadIcon(lines: List[str], class_name: str, icon: str, indent: str = ""):
         lines.append(
             f'{indent}<div class="{class_name}" id="image_{len(images)}">')
         lines.append(
-            f'{indent}  <img src="{icon}" alt="icon" />'
+            f'{indent}  <img src="{icon}" alt="icon"/>'
         )
         lines.append(f'{indent}</div>')  # class_name
         return
@@ -139,8 +139,7 @@ def LoadIcon(lines: List[str], class_name: str, icon: str, indent: str = ""):
         f'{indent}<div class="{class_name}" id="image_{len(images)}">')
     text = SvgToBase64(file)
     # lines.append(
-    images.append(
-        f'{indent}  <img src="data:image/svg+xml;base64,{text}" alt="icon" />')
+    images.append(f'<img src="data:image/svg+xml;base64,{text}" alt="icon"/>')
     lines.append(f'{indent}</div>')  # class_name
     return
 
@@ -267,8 +266,45 @@ def GenerateHtml(template: str) -> str:
         AppendLines(html, lines, 1)
     template[cur] = '\n'.join(html)
 
-    cur = FindLine('@images@')
-    template[cur] = ',\n'.join([f"'{image.strip()}'" for image in images])
+    cur = FindLine('@loadimages@')
+    if images:
+        text = ''
+
+        text += '    function yieldToMain() {\n'
+        text += '      if (globalThis.scheduler?.yield) {\n'
+        text += '        return scheduler.yield();\n'
+        text += '      }\n'
+        text += '      return new Promise(resolve => {\n'
+        text += '        setTimeout(resolve, 0);\n'
+        text += '      });\n'
+        text += '    }\n'
+
+        text += '\n'
+        text += '    async function loadImages(deadline = 10) {\n'
+        text += '      let lastYield = performance.now();\n'
+        text += '      const IMAGES = [\n'
+        for i, image in enumerate(images):
+            if i != len(images) - 1:
+                text += f"        '{image}',\n"
+            else:
+                text += f"        '{image}'\n"
+        text += '      ]\n'
+        text += '      for (let i = 0; i < IMAGES.length; i++) {\n'
+        text += '        document.getElementById(`image_${i}`).innerHTML = IMAGES[i];\n'
+        text += '        if (performance.now() - lastYield > deadline) {\n'
+        text += '          await yieldToMain();\n'
+        text += '          lastYield = performance.now();\n'
+        text += '        }\n'
+        text += '      }\n'
+        text += '    }\n'
+
+        text += '\n'
+        text += '    window.onload = function () {\n'
+        text += '      loadImages();\n'
+        text += '    };\n'
+        template[cur] = text
+    else:
+        template.pop(cur)
 
     cur = FindLine('@footer@')
     if config['lang'].startswith('zh'):
