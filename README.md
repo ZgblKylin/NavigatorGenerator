@@ -1,5 +1,7 @@
 # NavigatiorGenerator
 
+[中文](README-zh.md)
+
 Static HTML navigation page generator.
 
 ## Description
@@ -12,7 +14,7 @@ Features:
 - Blazing fast with static HTML.
 - Auto adapt to dark mode.
 - Responsive layout.
-- Emoji and Material Designe Icons support.
+- Emoji and Material Design Icons support.
 
 ## Requirements
 
