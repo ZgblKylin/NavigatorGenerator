@@ -2,7 +2,7 @@
 
 [中文](README-zh.md)
 
-Static HTML navigation page generator.
+Static HTML navigation page generator. [Example](https://zgblkylin.github.io/NavigatorGenerator/)
 
 ## Description
 
@@ -29,7 +29,7 @@ Features:
 
 If `output` not given, the generated html will be printed to stdout.
 
-See `/example` for an example config file and generated html.
+See `/example` for an example config file and `/doc` or [GitHub Pages](https://zgblkylin.github.io/NavigatorGenerator/) for generated html.
 
 Google Chrome lighthouse report for the generated html(hosted on Nginx with gzip compression enabled):
 ![lighthouse report](example/lighthouse.png)

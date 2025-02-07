@@ -1,6 +1,6 @@
 # NavigatiorGenerator
 
-静态HTML导航页面生成器。
+静态HTML导航页面生成器。[范例](https://zgblkylin.github.io/NavigatorGenerator/)
 
 ## 说明
 
@@ -27,7 +27,7 @@
 
 如果`output`未设置，则html结果将被输出至stdout。
 
-范例配置和生成的html详见`/example`。
+范例配置详见`/example`，生成的html详见`/doc`或者[GitHub Pages](https://zgblkylin.github.io/NavigatorGenerator/)。
 
 生成html的Google Chrome lighthouse报告（使用Nginx托管，启用gzip压缩支持）：
 ![lighthouse报告](example/lighthouse.png)
