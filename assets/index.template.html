@@ -317,6 +317,13 @@
 </head>
 
 <body>
+  <script>
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  </script>
+
   <div id="content" class="content">
     <div id="header" class="header">
       <div id="header-greeting" class="header-greeting">
@@ -337,23 +344,6 @@
   </div>
 
   <script>
-    function changeTheme() {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      let newTheme;
-
-      if (currentTheme === 'auto') {
-        newTheme = 'light';
-      } else if (currentTheme === 'light') {
-        newTheme = 'dark';
-      } else {
-        newTheme = 'auto';
-      }
-
-      document.documentElement.setAttribute('data-theme', newTheme);
-      updateThemeButton(newTheme)
-      localStorage.setItem('theme', newTheme);
-    }
-
     function updateThemeButton(theme) {
       let icon;
       if (theme === 'light') {
@@ -366,11 +356,27 @@
       document.querySelector('.theme-button').textContent = icon;
     }
 
+    function changeTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      let newTheme;
+      if (currentTheme === 'auto') {
+        newTheme = 'light';
+      } else if (currentTheme === 'light') {
+        newTheme = 'dark';
+      } else {
+        newTheme = 'auto';
+      }
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateThemeButton(newTheme)
+      localStorage.setItem('theme', newTheme);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeButton(savedTheme);
+      } else {
+        updateThemeButton('auto');
       }
     });
   </script>
