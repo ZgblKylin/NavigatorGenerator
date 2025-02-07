@@ -203,6 +203,9 @@
     }
 
     .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 35px;
       height: 35px;
       position: absolute;
@@ -221,12 +224,14 @@
       height: 32px;
     }
 
-    .icon img,
-    svg {
+    .icon img {
       display: block;
       width: 32px;
       height: 32px;
-      color: var(--color-primary);
+    }
+
+    .icon svg {
+      fill: var(--color-primary);
     }
 
     .text {
@@ -301,12 +306,14 @@
       height: 20px;
     }
 
-    .category-icon img,
-    svg {
+    .category-icon img {
       display: block;
       width: 20px;
       height: 20px;
-      color: var(--color-primary);
+    }
+
+    .category-icon svg {
+      fill: var(--color-primary);
     }
 
     footer,
@@ -375,8 +382,6 @@
         updateThemeButton(savedTheme);
       }
     });
-
-    // @loadimages@
   </script>
 </body>
 

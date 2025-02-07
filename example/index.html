@@ -202,6 +202,9 @@
     }
 
     .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 35px;
       height: 35px;
       position: absolute;
@@ -220,12 +223,14 @@
       height: 32px;
     }
 
-    .icon img,
-    svg {
+    .icon img {
       display: block;
       width: 32px;
       height: 32px;
-      color: var(--color-primary);
+    }
+
+    .icon svg {
+      fill: var(--color-primary);
     }
 
     .text {
@@ -300,12 +305,14 @@
       height: 20px;
     }
 
-    .category-icon img,
-    svg {
+    .category-icon img {
       display: block;
       width: 20px;
       height: 20px;
-      color: var(--color-primary);
+    }
+
+    .category-icon svg {
+      fill: var(--color-primary);
     }
 
     footer,
@@ -377,7 +384,8 @@
         </div>
         <div class="button">
           <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
-            <div class="icon" id="image_0">
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" id="mdi-evernote" viewBox="0 0 24 24"><path d="M15.09,11.63C15.09,11.63 15.28,10.35 16,10.35C16.76,10.35 17.78,12.06 17.78,12.06C17.78,12.06 15.46,11.63 15.09,11.63M19,4.69C18.64,4.09 16.83,3.41 15.89,3.41C14.96,3.41 13.5,3.41 13.5,3.41C13.5,3.41 12.7,2 10.88,2C9.05,2 9.17,2.81 9.17,3.5V6.32L8.34,7.19H4.5C4.5,7.19 3.44,7.91 3.44,9.44C3.44,11 3.92,16.35 7.13,16.85C10.93,17.43 11.58,15.67 11.58,15.46C11.58,14.56 11.6,13.21 11.6,13.21C11.6,13.21 12.71,15.33 14.39,15.33C16.07,15.33 17.04,16.3 17.04,17.29C17.04,18.28 17.04,19.13 17.04,19.13C17.04,19.13 17,20.28 16,20.28C15,20.28 13.89,20.28 13.89,20.28C13.89,20.28 13.2,19.74 13.2,19C13.2,18.25 13.53,18.05 13.93,18.05C14.32,18.05 14.65,18.09 14.65,18.09V16.53C14.65,16.53 11.47,16.5 11.47,18.94C11.47,21.37 13.13,22 14.46,22C15.8,22 16.63,22 16.63,22C16.63,22 20.56,21.5 20.56,13.75C20.56,6 19.33,5.28 19,4.69M7.5,6.31H4.26L8.32,2.22V5.5L7.5,6.31Z" /></svg>
             </div>
             <div class="text">
               <div class="title">Example Link</div>
@@ -387,7 +395,8 @@
         </div>
         <div class="button">
           <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
-            <div class="icon" id="image_1">
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" id="mdi-fire-hydrant" viewBox="0 0 24 24"><path d="M5 15V14H4V12H5V11H7V15H5M19 12V11H17V15H19V14H20V12H19M18 6H15.86C15.5 4.6 14.4 3.5 13 3.14V2H11V3.14C9.6 3.5 8.5 4.6 8.14 6H6V8H18V6M18 22H6C6 20.9 6.9 20 8 20V9H16V20C17.11 20 18 20.9 18 22M10 13C10 14.11 10.9 15 12 15S14 14.11 14 13 13.11 11 12 11 10 11.9 10 13Z" /></svg>
             </div>
             <div class="text">
               <div class="title">Example Link</div>
@@ -397,7 +406,8 @@
         </div>
         <div class="button">
           <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
-            <div class="icon" id="image_2">
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" id="mdi-email" viewBox="0 0 24 24"><path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" /></svg>
             </div>
             <div class="text">
               <div class="title">Example Link</div>
@@ -407,7 +417,8 @@
         </div>
         <div class="button">
           <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
-            <div class="icon" id="image_3">
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" id="mdi-microsoft-onenote" viewBox="0 0 24 24"><path d="M21.17 3.25Q21.5 3.25 21.76 3.5 22 3.74 22 4.08V19.92Q22 20.26 21.76 20.5 21.5 20.75 21.17 20.75H7.83Q7.5 20.75 7.24 20.5 7 20.26 7 19.92V17H2.83Q2.5 17 2.24 16.76 2 16.5 2 16.17V7.83Q2 7.5 2.24 7.24 2.5 7 2.83 7H7V4.08Q7 3.74 7.24 3.5 7.5 3.25 7.83 3.25M5.8 11.17L8.16 15.27H9.65V8.73H8.2V12.92L5.93 8.73H4.35V15.27H5.8M20.75 19.5V17H18.25V19.5M20.75 15.75V13.25H18.25V15.75M20.75 12V9.5H18.25V12M20.75 8.25V4.5H8.25V7H11.17Q11.5 7 11.76 7.24 12 7.5 12 7.83V16.17Q12 16.5 11.76 16.76 11.5 17 11.17 17H8.25V19.5H17V8.25Z" /></svg>
             </div>
             <div class="text">
               <div class="title">Example Link</div>
@@ -417,7 +428,8 @@
         </div>
         <div class="button">
           <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
-            <div class="icon" id="image_4">
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" id="mdi-robber" viewBox="0 0 24 24"><path d="M10.7 12.5C10.7 12.8 9.4 13.2 8.4 13.2S6.3 12.5 6.3 12.3C6.3 12 7 11.1 8.6 11C9.5 10.9 10.5 11.5 10.7 12.5M15.4 11C14.4 10.9 13.5 11.5 13.3 12.5C13.3 12.8 14.5 13.2 15.6 13.2C16.7 13.2 17.7 12.5 17.7 12.3S17 11.1 15.4 11M22 12C22 17.5 17.5 22 12 22S2 17.5 2 12 6.5 2 12 2 22 6.5 22 12M20 11.2C20 9.2 19.3 8.5 16.7 8.5C14.1 8.5 13.3 9.6 12 9.6S10 8.5 7.3 8.5 4 9.1 4 11.2C4 14.6 5.5 16.5 7.6 16.5C9.2 16.5 10.4 14.5 12 14.5S14.7 16.5 16.4 16.5C18.5 16.5 20 14.6 20 11.2Z" /></svg>
             </div>
             <div class="text">
               <div class="title">Example Link</div>
@@ -427,7 +439,8 @@
         </div>
         <div class="button">
           <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
-            <div class="icon" id="image_5">
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" id="mdi-ev-plug-type1" viewBox="0 0 24 24"><path d="M13 9C13 10.1 13.9 11 15 11S17 10.1 17 9 16.1 7 15 7 13 7.9 13 9M7 9C7 10.1 7.9 11 9 11S11 10.1 11 9 10.1 7 9 7 7 7.9 7 9M9 13.2C9 12.6 8.4 12 7.8 12S6.6 12.6 6.6 13.2 7.2 14.4 7.8 14.4 9 13.9 9 13.2M14 16C14 14.9 13.1 14 12 14S10 14.9 10 16 10.9 18 12 18 14 17.1 14 16M12 4C16.4 4 20 7.6 20 12S16.4 20 12 20 4 16.4 4 12 7.6 4 12 4M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M17.5 13.2C17.5 12.5 16.9 12 16.3 12C15.6 12 15.1 12.6 15.1 13.2S15.7 14.4 16.3 14.4C16.9 14.5 17.5 13.9 17.5 13.2" /></svg>
             </div>
             <div class="text">
               <div class="title">Example Link</div>
@@ -437,7 +450,8 @@
         </div>
         <div class="button">
           <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
-            <div class="icon" id="image_6">
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" id="mdi-file-image" viewBox="0 0 24 24"><path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V12L14,16L12,14L6,20M8,9A2,2 0 0,0 6,11A2,2 0 0,0 8,13A2,2 0 0,0 10,11A2,2 0 0,0 8,9Z" /></svg>
             </div>
             <div class="text">
               <div class="title">Example Link</div>
@@ -447,7 +461,8 @@
         </div>
         <div class="button">
           <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
-            <div class="icon" id="image_7">
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" id="mdi-weather-hazy" viewBox="0 0 24 24"><path d="M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,6.65C6.9,7.16 6.36,7.78 5.94,8.5C5.5,9.24 5.25,10 5.11,10.79L3.34,7M20.65,7L18.88,10.79C18.74,10 18.47,9.23 18.05,8.5C17.63,7.78 17.1,7.15 16.5,6.64M14,15A1,1 0 0,0 13,14H3A1,1 0 0,0 2,15A1,1 0 0,0 3,16H13A1,1 0 0,0 14,15M22,15A1,1 0 0,0 21,14H17A1,1 0 0,0 16,15A1,1 0 0,0 17,16H21A1,1 0 0,0 22,15M10,19A1,1 0 0,0 11,20H20A1,1 0 0,0 21,19A1,1 0 0,0 20,18H11A1,1 0 0,0 10,19M3,19A1,1 0 0,0 4,20H7A1,1 0 0,0 8,19A1,1 0 0,0 7,18H4A1,1 0 0,0 3,19M12,9A3,3 0 0,1 15,12H17A5,5 0 0,0 12,7A5,5 0 0,0 7,12H9A3,3 0 0,1 12,9Z" /></svg>
             </div>
             <div class="text">
               <div class="title">Example Link</div>
@@ -552,7 +567,7 @@
             </li>
             <li>
               <a class="category-item" target="_self" rel="noopener noreferrer" href="https://bbc.com/sport" title="BBC Sport">
-                <div class="category-icon" id="image_8">
+                <div class="category-icon">
                   <img src="bbc-sport.ico" alt="icon"/>
                 </div>
                 <span>BBC Sport</span>
@@ -644,41 +659,6 @@
         updateThemeButton(savedTheme);
       }
     });
-
-    function yieldToMain() {
-      if (globalThis.scheduler?.yield) {
-        return scheduler.yield();
-      }
-      return new Promise(resolve => {
-        setTimeout(resolve, 0);
-      });
-    }
-
-    async function loadImages(deadline = 10) {
-      let lastYield = performance.now();
-      const IMAGES = [
-        '<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZXZlcm5vdGUiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTE1LjA5LDExLjYzQzE1LjA5LDExLjYzIDE1LjI4LDEwLjM1IDE2LDEwLjM1QzE2Ljc2LDEwLjM1IDE3Ljc4LDEyLjA2IDE3Ljc4LDEyLjA2QzE3Ljc4LDEyLjA2IDE1LjQ2LDExLjYzIDE1LjA5LDExLjYzTTE5LDQuNjlDMTguNjQsNC4wOSAxNi44MywzLjQxIDE1Ljg5LDMuNDFDMTQuOTYsMy40MSAxMy41LDMuNDEgMTMuNSwzLjQxQzEzLjUsMy40MSAxMi43LDIgMTAuODgsMkM5LjA1LDIgOS4xNywyLjgxIDkuMTcsMy41VjYuMzJMOC4zNCw3LjE5SDQuNUM0LjUsNy4xOSAzLjQ0LDcuOTEgMy40NCw5LjQ0QzMuNDQsMTEgMy45MiwxNi4zNSA3LjEzLDE2Ljg1QzEwLjkzLDE3LjQzIDExLjU4LDE1LjY3IDExLjU4LDE1LjQ2QzExLjU4LDE0LjU2IDExLjYsMTMuMjEgMTEuNiwxMy4yMUMxMS42LDEzLjIxIDEyLjcxLDE1LjMzIDE0LjM5LDE1LjMzQzE2LjA3LDE1LjMzIDE3LjA0LDE2LjMgMTcuMDQsMTcuMjlDMTcuMDQsMTguMjggMTcuMDQsMTkuMTMgMTcuMDQsMTkuMTNDMTcuMDQsMTkuMTMgMTcsMjAuMjggMTYsMjAuMjhDMTUsMjAuMjggMTMuODksMjAuMjggMTMuODksMjAuMjhDMTMuODksMjAuMjggMTMuMiwxOS43NCAxMy4yLDE5QzEzLjIsMTguMjUgMTMuNTMsMTguMDUgMTMuOTMsMTguMDVDMTQuMzIsMTguMDUgMTQuNjUsMTguMDkgMTQuNjUsMTguMDlWMTYuNTNDMTQuNjUsMTYuNTMgMTEuNDcsMTYuNSAxMS40NywxOC45NEMxMS40NywyMS4zNyAxMy4xMywyMiAxNC40NiwyMkMxNS44LDIyIDE2LjYzLDIyIDE2LjYzLDIyQzE2LjYzLDIyIDIwLjU2LDIxLjUgMjAuNTYsMTMuNzVDMjAuNTYsNiAxOS4zMyw1LjI4IDE5LDQuNjlNNy41LDYuMzFINC4yNkw4LjMyLDIuMjJWNS41TDcuNSw2LjMxWiIgLz48L3N2Zz4=" alt="icon"/>',
-        '<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZmlyZS1oeWRyYW50IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik01IDE1VjE0SDRWMTJINVYxMUg3VjE1SDVNMTkgMTJWMTFIMTdWMTVIMTlWMTRIMjBWMTJIMTlNMTggNkgxNS44NkMxNS41IDQuNiAxNC40IDMuNSAxMyAzLjE0VjJIMTFWMy4xNEM5LjYgMy41IDguNSA0LjYgOC4xNCA2SDZWOEgxOFY2TTE4IDIySDZDNiAyMC45IDYuOSAyMCA4IDIwVjlIMTZWMjBDMTcuMTEgMjAgMTggMjAuOSAxOCAyMk0xMCAxM0MxMCAxNC4xMSAxMC45IDE1IDEyIDE1UzE0IDE0LjExIDE0IDEzIDEzLjExIDExIDEyIDExIDEwIDExLjkgMTAgMTNaIiAvPjwvc3ZnPg==" alt="icon"/>',
-        '<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZW1haWwiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIwLDhMMTIsMTNMNCw4VjZMMTIsMTFMMjAsNk0yMCw0SDRDMi44OSw0IDIsNC44OSAyLDZWMThBMiwyIDAgMCwwIDQsMjBIMjBBMiwyIDAgMCwwIDIyLDE4VjZDMjIsNC44OSAyMS4xLDQgMjAsNFoiIC8+PC9zdmc+" alt="icon"/>',
-        '<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktbWljcm9zb2Z0LW9uZW5vdGUiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIxLjE3IDMuMjVRMjEuNSAzLjI1IDIxLjc2IDMuNSAyMiAzLjc0IDIyIDQuMDhWMTkuOTJRMjIgMjAuMjYgMjEuNzYgMjAuNSAyMS41IDIwLjc1IDIxLjE3IDIwLjc1SDcuODNRNy41IDIwLjc1IDcuMjQgMjAuNSA3IDIwLjI2IDcgMTkuOTJWMTdIMi44M1EyLjUgMTcgMi4yNCAxNi43NiAyIDE2LjUgMiAxNi4xN1Y3LjgzUTIgNy41IDIuMjQgNy4yNCAyLjUgNyAyLjgzIDdIN1Y0LjA4UTcgMy43NCA3LjI0IDMuNSA3LjUgMy4yNSA3LjgzIDMuMjVNNS44IDExLjE3TDguMTYgMTUuMjdIOS42NVY4LjczSDguMlYxMi45Mkw1LjkzIDguNzNINC4zNVYxNS4yN0g1LjhNMjAuNzUgMTkuNVYxN0gxOC4yNVYxOS41TTIwLjc1IDE1Ljc1VjEzLjI1SDE4LjI1VjE1Ljc1TTIwLjc1IDEyVjkuNUgxOC4yNVYxMk0yMC43NSA4LjI1VjQuNUg4LjI1VjdIMTEuMTdRMTEuNSA3IDExLjc2IDcuMjQgMTIgNy41IDEyIDcuODNWMTYuMTdRMTIgMTYuNSAxMS43NiAxNi43NiAxMS41IDE3IDExLjE3IDE3SDguMjVWMTkuNUgxN1Y4LjI1WiIgLz48L3N2Zz4=" alt="icon"/>',
-        '<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktcm9iYmVyIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0xMC43IDEyLjVDMTAuNyAxMi44IDkuNCAxMy4yIDguNCAxMy4yUzYuMyAxMi41IDYuMyAxMi4zQzYuMyAxMiA3IDExLjEgOC42IDExQzkuNSAxMC45IDEwLjUgMTEuNSAxMC43IDEyLjVNMTUuNCAxMUMxNC40IDEwLjkgMTMuNSAxMS41IDEzLjMgMTIuNUMxMy4zIDEyLjggMTQuNSAxMy4yIDE1LjYgMTMuMkMxNi43IDEzLjIgMTcuNyAxMi41IDE3LjcgMTIuM1MxNyAxMS4xIDE1LjQgMTFNMjIgMTJDMjIgMTcuNSAxNy41IDIyIDEyIDIyUzIgMTcuNSAyIDEyIDYuNSAyIDEyIDIgMjIgNi41IDIyIDEyTTIwIDExLjJDMjAgOS4yIDE5LjMgOC41IDE2LjcgOC41QzE0LjEgOC41IDEzLjMgOS42IDEyIDkuNlMxMCA4LjUgNy4zIDguNSA0IDkuMSA0IDExLjJDNCAxNC42IDUuNSAxNi41IDcuNiAxNi41QzkuMiAxNi41IDEwLjQgMTQuNSAxMiAxNC41UzE0LjcgMTYuNSAxNi40IDE2LjVDMTguNSAxNi41IDIwIDE0LjYgMjAgMTEuMloiIC8+PC9zdmc+" alt="icon"/>',
-        '<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZXYtcGx1Zy10eXBlMSIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTMgOUMxMyAxMC4xIDEzLjkgMTEgMTUgMTFTMTcgMTAuMSAxNyA5IDE2LjEgNyAxNSA3IDEzIDcuOSAxMyA5TTcgOUM3IDEwLjEgNy45IDExIDkgMTFTMTEgMTAuMSAxMSA5IDEwLjEgNyA5IDcgNyA3LjkgNyA5TTkgMTMuMkM5IDEyLjYgOC40IDEyIDcuOCAxMlM2LjYgMTIuNiA2LjYgMTMuMiA3LjIgMTQuNCA3LjggMTQuNCA5IDEzLjkgOSAxMy4yTTE0IDE2QzE0IDE0LjkgMTMuMSAxNCAxMiAxNFMxMCAxNC45IDEwIDE2IDEwLjkgMTggMTIgMTggMTQgMTcuMSAxNCAxNk0xMiA0QzE2LjQgNCAyMCA3LjYgMjAgMTJTMTYuNCAyMCAxMiAyMCA0IDE2LjQgNCAxMiA3LjYgNCAxMiA0TTEyIDJDNi41IDIgMiA2LjUgMiAxMlM2LjUgMjIgMTIgMjIgMjIgMTcuNSAyMiAxMiAxNy41IDIgMTIgMk0xNy41IDEzLjJDMTcuNSAxMi41IDE2LjkgMTIgMTYuMyAxMkMxNS42IDEyIDE1LjEgMTIuNiAxNS4xIDEzLjJTMTUuNyAxNC40IDE2LjMgMTQuNEMxNi45IDE0LjUgMTcuNSAxMy45IDE3LjUgMTMuMiIgLz48L3N2Zz4=" alt="icon"/>',
-        '<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZmlsZS1pbWFnZSIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTMsOUgxOC41TDEzLDMuNVY5TTYsMkgxNEwyMCw4VjIwQTIsMiAwIDAsMSAxOCwyMkg2QzQuODksMjIgNCwyMS4xIDQsMjBWNEM0LDIuODkgNC44OSwyIDYsMk02LDIwSDE1TDE4LDIwVjEyTDE0LDE2TDEyLDE0TDYsMjBNOCw5QTIsMiAwIDAsMCA2LDExQTIsMiAwIDAsMCA4LDEzQTIsMiAwIDAsMCAxMCwxMUEyLDIgMCAwLDAgOCw5WiIgLz48L3N2Zz4=" alt="icon"/>',
-        '<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktd2VhdGhlci1oYXp5IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0xMiwyTDE0LjM5LDUuNDJDMTMuNjUsNS4xNSAxMi44NCw1IDEyLDVDMTEuMTYsNSAxMC4zNSw1LjE1IDkuNjEsNS40MkwxMiwyTTMuMzQsN0w3LjUsNi42NUM2LjksNy4xNiA2LjM2LDcuNzggNS45NCw4LjVDNS41LDkuMjQgNS4yNSwxMCA1LjExLDEwLjc5TDMuMzQsN00yMC42NSw3TDE4Ljg4LDEwLjc5QzE4Ljc0LDEwIDE4LjQ3LDkuMjMgMTguMDUsOC41QzE3LjYzLDcuNzggMTcuMSw3LjE1IDE2LjUsNi42NE0xNCwxNUExLDEgMCAwLDAgMTMsMTRIM0ExLDEgMCAwLDAgMiwxNUExLDEgMCAwLDAgMywxNkgxM0ExLDEgMCAwLDAgMTQsMTVNMjIsMTVBMSwxIDAgMCwwIDIxLDE0SDE3QTEsMSAwIDAsMCAxNiwxNUExLDEgMCAwLDAgMTcsMTZIMjFBMSwxIDAgMCwwIDIyLDE1TTEwLDE5QTEsMSAwIDAsMCAxMSwyMEgyMEExLDEgMCAwLDAgMjEsMTlBMSwxIDAgMCwwIDIwLDE4SDExQTEsMSAwIDAsMCAxMCwxOU0zLDE5QTEsMSAwIDAsMCA0LDIwSDdBMSwxIDAgMCwwIDgsMTlBMSwxIDAgMCwwIDcsMThINEExLDEgMCAwLDAgMywxOU0xMiw5QTMsMyAwIDAsMSAxNSwxMkgxN0E1LDUgMCAwLDAgMTIsN0E1LDUgMCAwLDAgNywxMkg5QTMsMyAwIDAsMSAxMiw5WiIgLz48L3N2Zz4=" alt="icon"/>'
-      ]
-      for (let i = 0; i < IMAGES.length; i++) {
-        document.getElementById(`image_${i}`).innerHTML = IMAGES[i];
-        if (performance.now() - lastYield > deadline) {
-          await yieldToMain();
-          lastYield = performance.now();
-        }
-      }
-    }
-
-    window.onload = function () {
-      loadImages();
-    };
-
   </script>
 </body>
 

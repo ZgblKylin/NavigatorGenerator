@@ -87,9 +87,6 @@ def IcoToBase64(path: str) -> str:
         sys.exit(1)
 
 
-images = []
-
-
 def LoadIcon(lines: List[str], class_name: str, icon: str, indent: str = ""):
     if icon.startswith(":") and icon.endswith(":"):
         lang = config['lang'].split("-")[0]
@@ -119,11 +116,8 @@ def LoadIcon(lines: List[str], class_name: str, icon: str, indent: str = ""):
     if os.path.isfile(path):
         _, suffix = os.path.splitext(path)
         suffix = suffix.lower()
-        lines.append(
-            f'{indent}<div class="{class_name}" id="image_{len(images)}">')
-        lines.append(
-            f'{indent}  <img src="{icon}" alt="icon"/>'
-        )
+        lines.append(f'{indent}<div class="{class_name}">')
+        lines.append(f'{indent}  <img src="{icon}" alt="icon"/>')
         lines.append(f'{indent}</div>')  # class_name
         return
 
@@ -135,11 +129,10 @@ def LoadIcon(lines: List[str], class_name: str, icon: str, indent: str = ""):
     if not os.path.isfile(file):
         print(f"Error: {icon} is not a valid icon")
         sys.exit(1)
-    lines.append(
-        f'{indent}<div class="{class_name}" id="image_{len(images)}">')
-    text = SvgToBase64(file)
-    # lines.append(
-    images.append(f'<img src="data:image/svg+xml;base64,{text}" alt="icon"/>')
+    lines.append(f'{indent}<div class="{class_name}">')
+    with open(file, 'r', encoding='utf-8') as f:
+        text = f.read()
+        lines.append(f'{indent}  {text.strip()}')
     lines.append(f'{indent}</div>')  # class_name
     return
 
@@ -208,7 +201,8 @@ def GenerateHtml(template: str) -> str:
                 desc = entry['desc'] if 'desc' in entry else link
                 lines = []
                 lines.append(f'<div class="button">')
-                lines.append(f'  <a class="button-item" {target} href="{link}" title="{name}">')
+                lines.append(
+                    f'  <a class="button-item" {target} href="{link}" title="{name}">')
                 LoadIcon(lines, 'icon', icon, indent="    ")
                 lines.append(f'    <div class="text">')
                 lines.append(f'      <div class="title">{name}</div>')
@@ -235,7 +229,8 @@ def GenerateHtml(template: str) -> str:
                     icon = entry['icon'] if 'icon' in entry else ''
                     lines = []
                     lines.append(f'<li>')
-                    lines.append(f'  <a class="category-item" {target} href="{link}" title="{name}">')
+                    lines.append(
+                        f'  <a class="category-item" {target} href="{link}" title="{name}">')
                     if icon:
                         LoadIcon(lines, 'category-icon', icon, indent="    ")
                     lines.append(f'    <span>{name}</span>')
@@ -265,46 +260,6 @@ def GenerateHtml(template: str) -> str:
                 sys.exit(1)
         AppendLines(html, lines, 1)
     template[cur] = '\n'.join(html)
-
-    cur = FindLine('@loadimages@')
-    if images:
-        text = ''
-
-        text += '    function yieldToMain() {\n'
-        text += '      if (globalThis.scheduler?.yield) {\n'
-        text += '        return scheduler.yield();\n'
-        text += '      }\n'
-        text += '      return new Promise(resolve => {\n'
-        text += '        setTimeout(resolve, 0);\n'
-        text += '      });\n'
-        text += '    }\n'
-
-        text += '\n'
-        text += '    async function loadImages(deadline = 10) {\n'
-        text += '      let lastYield = performance.now();\n'
-        text += '      const IMAGES = [\n'
-        for i, image in enumerate(images):
-            if i != len(images) - 1:
-                text += f"        '{image}',\n"
-            else:
-                text += f"        '{image}'\n"
-        text += '      ]\n'
-        text += '      for (let i = 0; i < IMAGES.length; i++) {\n'
-        text += '        document.getElementById(`image_${i}`).innerHTML = IMAGES[i];\n'
-        text += '        if (performance.now() - lastYield > deadline) {\n'
-        text += '          await yieldToMain();\n'
-        text += '          lastYield = performance.now();\n'
-        text += '        }\n'
-        text += '      }\n'
-        text += '    }\n'
-
-        text += '\n'
-        text += '    window.onload = function () {\n'
-        text += '      loadImages();\n'
-        text += '    };\n'
-        template[cur] = text
-    else:
-        template.pop(cur)
 
     cur = FindLine('@footer@')
     if config['lang'].startswith('zh'):
