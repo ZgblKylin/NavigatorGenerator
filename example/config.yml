@@ -58,6 +58,8 @@ groups:
           - name: Facebook
             link: https://facebook.com
             icon: 📘
+            # optional description
+            desc: Connect with friends, family and communities of people who share your interests.
           - name: twitter
             link: https://twitter.com
             icon: 🐦

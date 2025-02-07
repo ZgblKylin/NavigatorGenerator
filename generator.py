@@ -199,10 +199,11 @@ def GenerateHtml(template: str) -> str:
                 link = entry['link']
                 icon = entry['icon']
                 desc = entry['desc'] if 'desc' in entry else link
+                tooltip = entry['desc'] if 'desc' in entry else name
                 lines = []
                 lines.append(f'<div class="button">')
                 lines.append(
-                    f'  <a class="button-item" {target} href="{link}" title="{name}">')
+                    f'  <a class="button-item" {target} href="{link}" title="{tooltip}">')
                 LoadIcon(lines, 'icon', icon, indent="    ")
                 lines.append(f'    <div class="text">')
                 lines.append(f'      <div class="title">{name}</div>')
@@ -227,10 +228,11 @@ def GenerateHtml(template: str) -> str:
                     name = entry['name']
                     link = entry['link']
                     icon = entry['icon'] if 'icon' in entry else ''
+                    tooltip = entry['desc'] if 'desc' in entry else name
                     lines = []
                     lines.append(f'<li>')
                     lines.append(
-                        f'  <a class="category-item" {target} href="{link}" title="{name}">')
+                        f'  <a class="category-item" {target} href="{link}" title="{tooltip}">')
                     if icon:
                         LoadIcon(lines, 'category-icon', icon, indent="    ")
                     lines.append(f'    <span>{name}</span>')
