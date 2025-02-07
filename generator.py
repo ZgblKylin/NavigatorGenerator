@@ -197,14 +197,15 @@ def GenerateHtml(template: str) -> str:
             for entry in links:
                 name = entry['name']
                 link = entry['link']
-                icon = entry['icon']
+                icon = entry['icon'] if 'icon' in entry else ''
                 desc = entry['desc'] if 'desc' in entry else link
                 tooltip = entry['desc'] if 'desc' in entry else name
                 lines = []
                 lines.append(f'<div class="button">')
                 lines.append(
                     f'  <a class="button-item" {target} href="{link}" title="{tooltip}">')
-                LoadIcon(lines, 'icon', icon, indent="    ")
+                if icon:
+                    LoadIcon(lines, 'icon', icon, indent="    ")
                 lines.append(f'    <div class="text">')
                 lines.append(f'      <div class="title">{name}</div>')
                 lines.append(f'      <div class="description">{desc}</div>')

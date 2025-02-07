@@ -13,7 +13,7 @@ groups:
         desc: Manage your files
       - name: Album
         link: http://example.com
-        icon: 📷
+        # icon: 📷 # optional
         desc: View your photos
       - name: EMail
         link: http://example.com
