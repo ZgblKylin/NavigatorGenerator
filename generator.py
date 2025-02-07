@@ -11,6 +11,8 @@ import yaml
 from PIL import Image
 
 config = []
+config_path = ''
+output_path = None
 
 
 def ParseConfig(config_file):
@@ -88,7 +90,7 @@ def IcoToBase64(path: str) -> str:
 images = []
 
 
-def LoadIcon(config_path: str, lines: List[str], class_name: str, icon: str, indent: str = ""):
+def LoadIcon(lines: List[str], class_name: str, icon: str, indent: str = ""):
     if icon.startswith(":") and icon.endswith(":"):
         lang = config['lang'].split("-")[0]
         text = emoji.emojize(icon, language=lang)
@@ -106,11 +108,14 @@ def LoadIcon(config_path: str, lines: List[str], class_name: str, icon: str, ind
         lines.append(f'{indent}</div>')
         return
 
-    # Check if is file
+    # Check if `icon` is existing file
     path = icon
     if not os.path.isfile(path):
         dir = os.path.dirname(os.path.abspath(config_path))
         path = os.path.join(dir, icon)
+        if output_path and not os.path.isfile(path):
+            dir = os.path.dirname(os.path.abspath(output_path))
+            path = os.path.join(dir, icon)
     if os.path.isfile(path):
         _, suffix = os.path.splitext(path)
         suffix = suffix.lower()
@@ -140,7 +145,7 @@ def LoadIcon(config_path: str, lines: List[str], class_name: str, icon: str, ind
     return
 
 
-def GenerateHtml(config_path: str, template: str) -> str:
+def GenerateHtml(template: str) -> str:
     template = template.split("\n")
 
     def FindLine(token: str, cur: int = 0) -> Optional[int]:
@@ -204,9 +209,8 @@ def GenerateHtml(config_path: str, template: str) -> str:
                 desc = entry['desc'] if 'desc' in entry else link
                 lines = []
                 lines.append(f'<div class="button">')
-                lines.append(
-                    f'  <a class="button-item" {target} href="{link}" title="{name}">')
-                LoadIcon(config_path, lines, 'icon', icon, indent="    ")
+                lines.append(f'  <a class="button-item" {target} href="{link}" title="{name}">')
+                LoadIcon(lines, 'icon', icon, indent="    ")
                 lines.append(f'    <div class="text">')
                 lines.append(f'      <div class="title">{name}</div>')
                 lines.append(f'      <div class="description">{desc}</div>')
@@ -232,11 +236,9 @@ def GenerateHtml(config_path: str, template: str) -> str:
                     icon = entry['icon'] if 'icon' in entry else ''
                     lines = []
                     lines.append(f'<li>')
-                    lines.append(
-                        f'  <a class="category-item" {target} href="{link}" title="{name}">')
+                    lines.append(f'  <a class="category-item" {target} href="{link}" title="{name}">')
                     if icon:
-                        LoadIcon(config_path, lines, 'category-icon',
-                                 icon, indent="    ")
+                        LoadIcon(lines, 'category-icon', icon, indent="    ")
                     lines.append(f'    <span>{name}</span>')
                     lines.append(f'  </a>')
                     lines.append(f'</li>')
@@ -271,10 +273,10 @@ def GenerateHtml(config_path: str, template: str) -> str:
     return '\n'.join(template)
 
 
-def OutputHtml(html: str, output: Optional[str] = None) -> None:
-    if output:
+def OutputHtml(html: str) -> None:
+    if output_path:
         try:
-            with open(output, 'w', encoding='utf-8') as f:
+            with open(output_path, 'w', encoding='utf-8') as f:
                 f.write(html)
         except Exception as e:
             print(f"Error writing output file: {e}")
@@ -300,8 +302,10 @@ if __name__ == "__main__":
     if not args.config:
         print("Error: config file is required")
         sys.exit(1)
+    config_path = args.config
+    output_path = args.output
 
     ParseConfig(args.config)
     template = LoadTemplate()
-    html = GenerateHtml(args.config, template)
-    OutputHtml(html, args.output)
+    html = GenerateHtml(template)
+    OutputHtml(html)

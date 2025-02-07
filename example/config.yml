@@ -94,8 +94,9 @@ groups:
             icon: ":basketball:" # 🏀 emoji name
           - name: BBC Sport
             link: https://bbc.com/sport
-            # Image file should be relative to pwd or config file, and must be
-            # shipped with generated html file with same relative path.
+            # Image file should be existing file path relative to cwd or config
+            # file or dest html, and must be shipped with generated html file
+            # with same relative path.
             icon: "bbc-sport.ico"
           - name: Sky Sports
             link: https://skysports.com
