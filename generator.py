@@ -169,7 +169,7 @@ def GenerateHtml(template: str) -> str:
     cur = FindLine('@favicon@')
     if 'favicon' in config:
         favicon = config['favicon']
-        template[cur] = f'<link rel="shortcut icon" href="{favicon}">'
+        template[cur] = f'  <link rel="shortcut icon" href="{favicon}">'
     else:
         template.pop(cur)
 
