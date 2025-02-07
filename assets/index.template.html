@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="@lang@">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="@description@">
+  <link rel="shortcut icon" href="@favicon@">
+  <title>@title@</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-light-background: #F2F7FF;
+      --color-light-primary: #000000;
+      --color-light-accent: #5c5c5c;
+      --color-dark-background: #1a1a1a;
+      --color-dark-primary: #fffdea;
+      --color-dark-accent: #5c5c5c;
+      --color-background: var(--color-light-background);
+      --color-primary: var(--color-light-primary);
+      --color-accent: var(--color-light-accent);
+      --spacing-ui: 10px;
+      --group-cols: 4;
+      --category-cols: 5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-background: var(--color-dark-background);
+        --color-primary: var(--color-dark-primary);
+        --color-accent: var(--color-dark-accent);
+      }
+    }
+
+    [data-theme="light"] {
+      --color-background: var(--color-light-background);
+      --color-primary: var(--color-light-primary);
+      --color-accent: var(--color-light-accent);
+    }
+
+    [data-theme="dark"] {
+      --color-background: var(--color-dark-background);
+      --color-primary: var(--color-dark-primary);
+      --color-accent: var(--color-dark-accent);
+    }
+
+    body {
+      background-color: var(--color-background);
+      transition: background-color 0.3s;
+      font-family: sans-serif;
+      font-size: 15px;
+      scrollbar-width: thin;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    div,
+    p,
+    a,
+    span {
+      color: var(--color-primary);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 4em;
+      display: inline-block;
+    }
+
+    h2 a {
+      text-transform: uppercase;
+      font-weight: 900;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .content {
+      display: block;
+      overflow: auto;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      padding: 25px 40px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .header,
+    .group {
+      width: 100%;
+      text-align: left;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 1.8em;
+      cursor: pointer;
+    }
+
+    .header-buttons img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .group {
+      margin: 2rem 0;
+      min-width: 375px;
+    }
+
+    .group h2 {
+      text-transform: uppercase;
+      font-weight: 900;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 1200px) {
+      .content {
+        width: 90%;
+        --group-cols: 3;
+        --category-cols: 4;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        width: 90%;
+        padding: 20px;
+        margin: 0 auto;
+        --group-cols: 2;
+        --category-cols: 3;
+      }
+    }
+
+    @media (max-width: 375px) {
+      .content {
+        width: 100%;
+        padding: 20px;
+        margin: 0 auto;
+        --group-cols: 1;
+        --category-cols: 2;
+      }
+    }
+
+    @media (min-width: 1201px) {
+      .content {
+        width: 90%;
+        padding: 50px 250px;
+      }
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(var(--group-cols), 1fr);
+      gap: 10px;
+    }
+
+    .button {
+      display: block;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .button:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      transition: all .1s;
+    }
+
+    .button-item {
+      padding: 2px 4px;
+      margin: 12px 0;
+      height: 40px;
+      display: block;
+      position: relative;
+      text-decoration: none;
+    }
+
+    .icon {
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      left: 5px;
+      font-size: 1.8em;
+    }
+
+    .icon * {
+      width: 90%;
+      color: var(--color-primary);
+    }
+
+    .icon.emoji {
+      font-size: 1.8em;
+      width: 32px;
+      height: 32px;
+    }
+
+    .icon img,
+    svg {
+      display: block;
+      width: 32px;
+      height: 32px;
+      color: var(--color-primary);
+    }
+
+    .text {
+      text-transform: uppercase;
+      margin-left: 35px;
+    }
+
+    .title {
+      font-size: 1em;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .description {
+      color: var(--color-accent);
+      font-weight: 400;
+      font-size: 0.8em;
+      opacity: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .category {
+      display: grid;
+      grid-template-columns: repeat(var(--category-cols), 1fr);
+      gap: 10px;
+    }
+
+    h3.category-title {
+      color: var(--color-accent);
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    .category-container {
+      float: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .category-list {
+      list-style: none;
+      line-height: 2;
+      display: block;
+    }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--color-primary);
+      font-size: 1em;
+      transition: all 0.25s;
+    }
+
+    a.category-item:hover {
+      text-decoration: underline;
+      padding-left: 10px;
+    }
+
+    .category-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+    }
+
+    .category-icon img,
+    svg {
+      display: block;
+      width: 20px;
+      height: 20px;
+      color: var(--color-primary);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="content" class="content">
+    <div id="header" class="header">
+      <div id="header-greeting" class="header-greeting">
+        <h1 id="greeting" class="greeting">@greeting@</h1>
+      </div>
+      <div id="header-buttons" class="header-buttons">
+        <span class="theme-button" onclick="changeTheme()">🌓</span>
+      </div>
+    </div>
+    <hr>
+    @groups@
+  </div>
+
+  <script>
+    function changeTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      let newTheme;
+
+      if (currentTheme === 'auto') {
+        newTheme = 'light';
+      } else if (currentTheme === 'light') {
+        newTheme = 'dark';
+      } else {
+        newTheme = 'auto';
+      }
+
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateThemeButton(newTheme)
+      localStorage.setItem('theme', newTheme);
+    }
+
+    function updateThemeButton(theme) {
+      let icon;
+      if (theme === 'light') {
+        icon = '🌞';
+      } else if (theme === 'dark') {
+        icon = '🌜';
+      } else {
+        icon = '🌓';
+      }
+      document.querySelector('.theme-button').textContent = icon;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+      }
+    });
+
+    function yieldToMain() {
+      if (globalThis.scheduler?.yield) {
+        return scheduler.yield();
+      }
+      return new Promise(resolve => {
+        setTimeout(resolve, 0);
+      });
+    }
+
+    async function loadImages(deadline = 10) {
+      let lastYield = performance.now();
+      const IMAGES = [
+        // '@images@'
+      ]
+      for (let i = 0; i < IMAGES.length; i++) {
+        document.getElementById(`image_${i}`).innerHTML = IMAGES[i];
+        if (performance.now() - lastYield > deadline) {
+          await yieldToMain();
+          lastYield = performance.now();
+        }
+      }
+    }
+
+    window.onload = function () {
+      loadImages();
+    };
+  </script>
+</body>
+
+</html>

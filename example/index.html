@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="This is a sample config file for NavigationPage">
+  <title>Hello</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-light-background: #F2F7FF;
+      --color-light-primary: #000000;
+      --color-light-accent: #5c5c5c;
+      --color-dark-background: #1a1a1a;
+      --color-dark-primary: #fffdea;
+      --color-dark-accent: #5c5c5c;
+      --color-background: var(--color-light-background);
+      --color-primary: var(--color-light-primary);
+      --color-accent: var(--color-light-accent);
+      --spacing-ui: 10px;
+      --group-cols: 4;
+      --category-cols: 5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-background: var(--color-dark-background);
+        --color-primary: var(--color-dark-primary);
+        --color-accent: var(--color-dark-accent);
+      }
+    }
+
+    [data-theme="light"] {
+      --color-background: var(--color-light-background);
+      --color-primary: var(--color-light-primary);
+      --color-accent: var(--color-light-accent);
+    }
+
+    [data-theme="dark"] {
+      --color-background: var(--color-dark-background);
+      --color-primary: var(--color-dark-primary);
+      --color-accent: var(--color-dark-accent);
+    }
+
+    body {
+      background-color: var(--color-background);
+      transition: background-color 0.3s;
+      font-family: sans-serif;
+      font-size: 15px;
+      scrollbar-width: thin;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    div,
+    p,
+    a,
+    span {
+      color: var(--color-primary);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 4em;
+      display: inline-block;
+    }
+
+    h2 a {
+      text-transform: uppercase;
+      font-weight: 900;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .content {
+      display: block;
+      overflow: auto;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      padding: 25px 40px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .header,
+    .group {
+      width: 100%;
+      text-align: left;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 1.8em;
+      cursor: pointer;
+    }
+
+    .header-buttons img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .group {
+      margin: 2rem 0;
+      min-width: 375px;
+    }
+
+    .group h2 {
+      text-transform: uppercase;
+      font-weight: 900;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 1200px) {
+      .content {
+        width: 90%;
+        --group-cols: 3;
+        --category-cols: 4;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        width: 90%;
+        padding: 20px;
+        margin: 0 auto;
+        --group-cols: 2;
+        --category-cols: 3;
+      }
+    }
+
+    @media (max-width: 375px) {
+      .content {
+        width: 100%;
+        padding: 20px;
+        margin: 0 auto;
+        --group-cols: 1;
+        --category-cols: 2;
+      }
+    }
+
+    @media (min-width: 1201px) {
+      .content {
+        width: 90%;
+        padding: 50px 250px;
+      }
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(var(--group-cols), 1fr);
+      gap: 10px;
+    }
+
+    .button {
+      display: block;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .button:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      transition: all .1s;
+    }
+
+    .button-item {
+      padding: 2px 4px;
+      margin: 12px 0;
+      height: 40px;
+      display: block;
+      position: relative;
+      text-decoration: none;
+    }
+
+    .icon {
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      left: 5px;
+      font-size: 1.8em;
+    }
+
+    .icon * {
+      width: 90%;
+      color: var(--color-primary);
+    }
+
+    .icon.emoji {
+      font-size: 1.8em;
+      width: 32px;
+      height: 32px;
+    }
+
+    .icon img,
+    svg {
+      display: block;
+      width: 32px;
+      height: 32px;
+      color: var(--color-primary);
+    }
+
+    .text {
+      text-transform: uppercase;
+      margin-left: 35px;
+    }
+
+    .title {
+      font-size: 1em;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .description {
+      color: var(--color-accent);
+      font-weight: 400;
+      font-size: 0.8em;
+      opacity: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .category {
+      display: grid;
+      grid-template-columns: repeat(var(--category-cols), 1fr);
+      gap: 10px;
+    }
+
+    h3.category-title {
+      color: var(--color-accent);
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    .category-container {
+      float: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .category-list {
+      list-style: none;
+      line-height: 2;
+      display: block;
+    }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--color-primary);
+      font-size: 1em;
+      transition: all 0.25s;
+    }
+
+    a.category-item:hover {
+      text-decoration: underline;
+      padding-left: 10px;
+    }
+
+    .category-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+    }
+
+    .category-icon img,
+    svg {
+      display: block;
+      width: 20px;
+      height: 20px;
+      color: var(--color-primary);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="content" class="content">
+    <div id="header" class="header">
+      <div id="header-greeting" class="header-greeting">
+        <h1 id="greeting" class="greeting">Hello!</h1>
+      </div>
+      <div id="header-buttons" class="header-buttons">
+        <span class="theme-button" onclick="changeTheme()">🌓</span>
+      </div>
+    </div>
+    <hr>
+    <div id="group" class="group">
+      <h2>Applications</h2>
+      <div class="container clearfix">
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="http://example.com" title="Files">
+            <div class="icon">
+              <div class="emoji">📁</div>
+            </div>
+            <div class="text">
+              <div class="title">Files</div>
+              <div class="description">Manage your files</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="http://example.com" title="Album">
+            <div class="icon">
+              <div class="emoji">📷</div>
+            </div>
+            <div class="text">
+              <div class="title">Album</div>
+              <div class="description">View your photos</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="http://example.com" title="EMail">
+            <div class="icon">
+              <div class="emoji">📧</div>
+            </div>
+            <div class="text">
+              <div class="title">EMail</div>
+              <div class="description">Send and receive emails</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="http://example.com" title="Calendar">
+            <div class="icon">
+              <div class="emoji">📅</div>
+            </div>
+            <div class="text">
+              <div class="title">Calendar</div>
+              <div class="description">Check your schedule</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
+            <div class="icon" id="image_0">
+            </div>
+            <div class="text">
+              <div class="title">Example Link</div>
+              <div class="description">Link Description</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
+            <div class="icon" id="image_1">
+            </div>
+            <div class="text">
+              <div class="title">Example Link</div>
+              <div class="description">Link Description</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
+            <div class="icon" id="image_2">
+            </div>
+            <div class="text">
+              <div class="title">Example Link</div>
+              <div class="description">Link Description</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
+            <div class="icon" id="image_3">
+            </div>
+            <div class="text">
+              <div class="title">Example Link</div>
+              <div class="description">Link Description</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
+            <div class="icon" id="image_4">
+            </div>
+            <div class="text">
+              <div class="title">Example Link</div>
+              <div class="description">https://example.com</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
+            <div class="icon" id="image_5">
+            </div>
+            <div class="text">
+              <div class="title">Example Link</div>
+              <div class="description">https://example.com</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
+            <div class="icon" id="image_6">
+            </div>
+            <div class="text">
+              <div class="title">Example Link</div>
+              <div class="description">https://example.com</div>
+            </div>
+          </a>
+        </div>
+        <div class="button">
+          <a class="button-item" target="_blank" rel="noopener noreferrer" href="https://example.com" title="Example Link">
+            <div class="icon" id="image_7">
+            </div>
+            <div class="text">
+              <div class="title">Example Link</div>
+              <div class="description">https://example.com</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div id="group" class="group">
+      <h2>Bookmarks</h2>
+      <div class="category clearfix">
+        <div class="category-container">
+          <h3 class="category-title">Social</h3>
+          <ul class="category-list">
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://facebook.com" title="Facebook">
+                <div class="category-icon">
+                  <div class="emoji">📘</div>
+                </div>
+                <span>Facebook</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://twitter.com" title="twitter">
+                <div class="category-icon">
+                  <div class="emoji">🐦</div>
+                </div>
+                <span>twitter</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://instagram.com" title="instagram">
+                <div class="category-icon">
+                  <div class="emoji">📷</div>
+                </div>
+                <span>instagram</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="category-container">
+          <h3 class="category-title">News</h3>
+          <ul class="category-list">
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://cnn.com" title="CNN">
+                <div class="category-icon">
+                  <div class="emoji">📰</div>
+                </div>
+                <span>CNN</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://bbc.com" title="BBC">
+                <div class="category-icon">
+                  <div class="emoji">🌍</div>
+                </div>
+                <span>BBC</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://reuters.com" title="Reuters">
+                <div class="category-icon">
+                  <div class="emoji">🗞️</div>
+                </div>
+                <span>Reuters</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="category-container">
+          <h3 class="category-title">Entertainment</h3>
+          <ul class="category-list">
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://youtube.com" title="YouTube">
+                <div class="category-icon">
+                  <div class="emoji">📺</div>
+                </div>
+                <span>YouTube</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://netflix.com" title="Netflix">
+                <span>Netflix</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://spotify.com" title="Spotify">
+                <span>Spotify</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="category-container">
+          <h3 class="category-title">Sports</h3>
+          <ul class="category-list">
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://espn.com" title="ESPN">
+                <div class="category-icon">🏀</div>
+                <span>ESPN</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://bbc.com/sport" title="BBC Sport">
+                <div class="category-icon" id="image_8">
+                  <img src="bbc-sport.ico" alt="icon" />
+                </div>
+                <span>BBC Sport</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://skysports.com" title="Sky Sports">
+                <div class="category-icon">
+                  <div class="emoji">🏈</div>
+                </div>
+                <span>Sky Sports</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="category-container">
+          <h3 class="category-title">Shopping</h3>
+          <ul class="category-list">
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://amazon.com" title="Amazon">
+                <div class="category-icon">
+                  <div class="emoji">🛒</div>
+                </div>
+                <span>Amazon</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://ebay.com" title="eBay">
+                <div class="category-icon">
+                  <div class="emoji">💰</div>
+                </div>
+                <span>eBay</span>
+              </a>
+            </li>
+            <li>
+              <a class="category-item" target="_self" rel="noopener noreferrer" href="https://walmart.com" title="Walmart">
+                <div class="category-icon">
+                  <div class="emoji">🏪</div>
+                </div>
+                <span>Walmart</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function changeTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      let newTheme;
+
+      if (currentTheme === 'auto') {
+        newTheme = 'light';
+      } else if (currentTheme === 'light') {
+        newTheme = 'dark';
+      } else {
+        newTheme = 'auto';
+      }
+
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateThemeButton(newTheme)
+      localStorage.setItem('theme', newTheme);
+    }
+
+    function updateThemeButton(theme) {
+      let icon;
+      if (theme === 'light') {
+        icon = '🌞';
+      } else if (theme === 'dark') {
+        icon = '🌜';
+      } else {
+        icon = '🌓';
+      }
+      document.querySelector('.theme-button').textContent = icon;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+      }
+    });
+
+    function yieldToMain() {
+      if (globalThis.scheduler?.yield) {
+        return scheduler.yield();
+      }
+      return new Promise(resolve => {
+        setTimeout(resolve, 0);
+      });
+    }
+
+    async function loadImages(deadline = 10) {
+      let lastYield = performance.now();
+      const IMAGES = [
+'<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZXZlcm5vdGUiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTE1LjA5LDExLjYzQzE1LjA5LDExLjYzIDE1LjI4LDEwLjM1IDE2LDEwLjM1QzE2Ljc2LDEwLjM1IDE3Ljc4LDEyLjA2IDE3Ljc4LDEyLjA2QzE3Ljc4LDEyLjA2IDE1LjQ2LDExLjYzIDE1LjA5LDExLjYzTTE5LDQuNjlDMTguNjQsNC4wOSAxNi44MywzLjQxIDE1Ljg5LDMuNDFDMTQuOTYsMy40MSAxMy41LDMuNDEgMTMuNSwzLjQxQzEzLjUsMy40MSAxMi43LDIgMTAuODgsMkM5LjA1LDIgOS4xNywyLjgxIDkuMTcsMy41VjYuMzJMOC4zNCw3LjE5SDQuNUM0LjUsNy4xOSAzLjQ0LDcuOTEgMy40NCw5LjQ0QzMuNDQsMTEgMy45MiwxNi4zNSA3LjEzLDE2Ljg1QzEwLjkzLDE3LjQzIDExLjU4LDE1LjY3IDExLjU4LDE1LjQ2QzExLjU4LDE0LjU2IDExLjYsMTMuMjEgMTEuNiwxMy4yMUMxMS42LDEzLjIxIDEyLjcxLDE1LjMzIDE0LjM5LDE1LjMzQzE2LjA3LDE1LjMzIDE3LjA0LDE2LjMgMTcuMDQsMTcuMjlDMTcuMDQsMTguMjggMTcuMDQsMTkuMTMgMTcuMDQsMTkuMTNDMTcuMDQsMTkuMTMgMTcsMjAuMjggMTYsMjAuMjhDMTUsMjAuMjggMTMuODksMjAuMjggMTMuODksMjAuMjhDMTMuODksMjAuMjggMTMuMiwxOS43NCAxMy4yLDE5QzEzLjIsMTguMjUgMTMuNTMsMTguMDUgMTMuOTMsMTguMDVDMTQuMzIsMTguMDUgMTQuNjUsMTguMDkgMTQuNjUsMTguMDlWMTYuNTNDMTQuNjUsMTYuNTMgMTEuNDcsMTYuNSAxMS40NywxOC45NEMxMS40NywyMS4zNyAxMy4xMywyMiAxNC40NiwyMkMxNS44LDIyIDE2LjYzLDIyIDE2LjYzLDIyQzE2LjYzLDIyIDIwLjU2LDIxLjUgMjAuNTYsMTMuNzVDMjAuNTYsNiAxOS4zMyw1LjI4IDE5LDQuNjlNNy41LDYuMzFINC4yNkw4LjMyLDIuMjJWNS41TDcuNSw2LjMxWiIgLz48L3N2Zz4=" alt="icon" />',
+'<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZmlyZS1oeWRyYW50IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik01IDE1VjE0SDRWMTJINVYxMUg3VjE1SDVNMTkgMTJWMTFIMTdWMTVIMTlWMTRIMjBWMTJIMTlNMTggNkgxNS44NkMxNS41IDQuNiAxNC40IDMuNSAxMyAzLjE0VjJIMTFWMy4xNEM5LjYgMy41IDguNSA0LjYgOC4xNCA2SDZWOEgxOFY2TTE4IDIySDZDNiAyMC45IDYuOSAyMCA4IDIwVjlIMTZWMjBDMTcuMTEgMjAgMTggMjAuOSAxOCAyMk0xMCAxM0MxMCAxNC4xMSAxMC45IDE1IDEyIDE1UzE0IDE0LjExIDE0IDEzIDEzLjExIDExIDEyIDExIDEwIDExLjkgMTAgMTNaIiAvPjwvc3ZnPg==" alt="icon" />',
+'<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZW1haWwiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIwLDhMMTIsMTNMNCw4VjZMMTIsMTFMMjAsNk0yMCw0SDRDMi44OSw0IDIsNC44OSAyLDZWMThBMiwyIDAgMCwwIDQsMjBIMjBBMiwyIDAgMCwwIDIyLDE4VjZDMjIsNC44OSAyMS4xLDQgMjAsNFoiIC8+PC9zdmc+" alt="icon" />',
+'<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktbWljcm9zb2Z0LW9uZW5vdGUiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIxLjE3IDMuMjVRMjEuNSAzLjI1IDIxLjc2IDMuNSAyMiAzLjc0IDIyIDQuMDhWMTkuOTJRMjIgMjAuMjYgMjEuNzYgMjAuNSAyMS41IDIwLjc1IDIxLjE3IDIwLjc1SDcuODNRNy41IDIwLjc1IDcuMjQgMjAuNSA3IDIwLjI2IDcgMTkuOTJWMTdIMi44M1EyLjUgMTcgMi4yNCAxNi43NiAyIDE2LjUgMiAxNi4xN1Y3LjgzUTIgNy41IDIuMjQgNy4yNCAyLjUgNyAyLjgzIDdIN1Y0LjA4UTcgMy43NCA3LjI0IDMuNSA3LjUgMy4yNSA3LjgzIDMuMjVNNS44IDExLjE3TDguMTYgMTUuMjdIOS42NVY4LjczSDguMlYxMi45Mkw1LjkzIDguNzNINC4zNVYxNS4yN0g1LjhNMjAuNzUgMTkuNVYxN0gxOC4yNVYxOS41TTIwLjc1IDE1Ljc1VjEzLjI1SDE4LjI1VjE1Ljc1TTIwLjc1IDEyVjkuNUgxOC4yNVYxMk0yMC43NSA4LjI1VjQuNUg4LjI1VjdIMTEuMTdRMTEuNSA3IDExLjc2IDcuMjQgMTIgNy41IDEyIDcuODNWMTYuMTdRMTIgMTYuNSAxMS43NiAxNi43NiAxMS41IDE3IDExLjE3IDE3SDguMjVWMTkuNUgxN1Y4LjI1WiIgLz48L3N2Zz4=" alt="icon" />',
+'<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktcm9iYmVyIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0xMC43IDEyLjVDMTAuNyAxMi44IDkuNCAxMy4yIDguNCAxMy4yUzYuMyAxMi41IDYuMyAxMi4zQzYuMyAxMiA3IDExLjEgOC42IDExQzkuNSAxMC45IDEwLjUgMTEuNSAxMC43IDEyLjVNMTUuNCAxMUMxNC40IDEwLjkgMTMuNSAxMS41IDEzLjMgMTIuNUMxMy4zIDEyLjggMTQuNSAxMy4yIDE1LjYgMTMuMkMxNi43IDEzLjIgMTcuNyAxMi41IDE3LjcgMTIuM1MxNyAxMS4xIDE1LjQgMTFNMjIgMTJDMjIgMTcuNSAxNy41IDIyIDEyIDIyUzIgMTcuNSAyIDEyIDYuNSAyIDEyIDIgMjIgNi41IDIyIDEyTTIwIDExLjJDMjAgOS4yIDE5LjMgOC41IDE2LjcgOC41QzE0LjEgOC41IDEzLjMgOS42IDEyIDkuNlMxMCA4LjUgNy4zIDguNSA0IDkuMSA0IDExLjJDNCAxNC42IDUuNSAxNi41IDcuNiAxNi41QzkuMiAxNi41IDEwLjQgMTQuNSAxMiAxNC41UzE0LjcgMTYuNSAxNi40IDE2LjVDMTguNSAxNi41IDIwIDE0LjYgMjAgMTEuMloiIC8+PC9zdmc+" alt="icon" />',
+'<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZXYtcGx1Zy10eXBlMSIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTMgOUMxMyAxMC4xIDEzLjkgMTEgMTUgMTFTMTcgMTAuMSAxNyA5IDE2LjEgNyAxNSA3IDEzIDcuOSAxMyA5TTcgOUM3IDEwLjEgNy45IDExIDkgMTFTMTEgMTAuMSAxMSA5IDEwLjEgNyA5IDcgNyA3LjkgNyA5TTkgMTMuMkM5IDEyLjYgOC40IDEyIDcuOCAxMlM2LjYgMTIuNiA2LjYgMTMuMiA3LjIgMTQuNCA3LjggMTQuNCA5IDEzLjkgOSAxMy4yTTE0IDE2QzE0IDE0LjkgMTMuMSAxNCAxMiAxNFMxMCAxNC45IDEwIDE2IDEwLjkgMTggMTIgMTggMTQgMTcuMSAxNCAxNk0xMiA0QzE2LjQgNCAyMCA3LjYgMjAgMTJTMTYuNCAyMCAxMiAyMCA0IDE2LjQgNCAxMiA3LjYgNCAxMiA0TTEyIDJDNi41IDIgMiA2LjUgMiAxMlM2LjUgMjIgMTIgMjIgMjIgMTcuNSAyMiAxMiAxNy41IDIgMTIgMk0xNy41IDEzLjJDMTcuNSAxMi41IDE2LjkgMTIgMTYuMyAxMkMxNS42IDEyIDE1LjEgMTIuNiAxNS4xIDEzLjJTMTUuNyAxNC40IDE2LjMgMTQuNEMxNi45IDE0LjUgMTcuNSAxMy45IDE3LjUgMTMuMiIgLz48L3N2Zz4=" alt="icon" />',
+'<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktZmlsZS1pbWFnZSIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTMsOUgxOC41TDEzLDMuNVY5TTYsMkgxNEwyMCw4VjIwQTIsMiAwIDAsMSAxOCwyMkg2QzQuODksMjIgNCwyMS4xIDQsMjBWNEM0LDIuODkgNC44OSwyIDYsMk02LDIwSDE1TDE4LDIwVjEyTDE0LDE2TDEyLDE0TDYsMjBNOCw5QTIsMiAwIDAsMCA2LDExQTIsMiAwIDAsMCA4LDEzQTIsMiAwIDAsMCAxMCwxMUEyLDIgMCAwLDAgOCw5WiIgLz48L3N2Zz4=" alt="icon" />',
+'<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJtZGktd2VhdGhlci1oYXp5IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0xMiwyTDE0LjM5LDUuNDJDMTMuNjUsNS4xNSAxMi44NCw1IDEyLDVDMTEuMTYsNSAxMC4zNSw1LjE1IDkuNjEsNS40MkwxMiwyTTMuMzQsN0w3LjUsNi42NUM2LjksNy4xNiA2LjM2LDcuNzggNS45NCw4LjVDNS41LDkuMjQgNS4yNSwxMCA1LjExLDEwLjc5TDMuMzQsN00yMC42NSw3TDE4Ljg4LDEwLjc5QzE4Ljc0LDEwIDE4LjQ3LDkuMjMgMTguMDUsOC41QzE3LjYzLDcuNzggMTcuMSw3LjE1IDE2LjUsNi42NE0xNCwxNUExLDEgMCAwLDAgMTMsMTRIM0ExLDEgMCAwLDAgMiwxNUExLDEgMCAwLDAgMywxNkgxM0ExLDEgMCAwLDAgMTQsMTVNMjIsMTVBMSwxIDAgMCwwIDIxLDE0SDE3QTEsMSAwIDAsMCAxNiwxNUExLDEgMCAwLDAgMTcsMTZIMjFBMSwxIDAgMCwwIDIyLDE1TTEwLDE5QTEsMSAwIDAsMCAxMSwyMEgyMEExLDEgMCAwLDAgMjEsMTlBMSwxIDAgMCwwIDIwLDE4SDExQTEsMSAwIDAsMCAxMCwxOU0zLDE5QTEsMSAwIDAsMCA0LDIwSDdBMSwxIDAgMCwwIDgsMTlBMSwxIDAgMCwwIDcsMThINEExLDEgMCAwLDAgMywxOU0xMiw5QTMsMyAwIDAsMSAxNSwxMkgxN0E1LDUgMCAwLDAgMTIsN0E1LDUgMCAwLDAgNywxMkg5QTMsMyAwIDAsMSAxMiw5WiIgLz48L3N2Zz4=" alt="icon" />'
+      ]
+      for (let i = 0; i < IMAGES.length; i++) {
+        document.getElementById(`image_${i}`).innerHTML = IMAGES[i];
+        if (performance.now() - lastYield > deadline) {
+          await yieldToMain();
+          lastYield = performance.now();
+        }
+      }
+    }
+
+    window.onload = function () {
+      loadImages();
+    };
+  </script>
+</body>
+
+</html>

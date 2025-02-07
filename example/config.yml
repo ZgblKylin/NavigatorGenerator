@@ -1,0 +1,113 @@
+title: Hello
+description: This is a sample config file for NavigationPage # optional
+greeting: Hello!
+lang: en
+# favicon: favicon.ico  # optional
+groups:
+  - name: Applications
+    open-new-tab: true
+    links:
+      - name: Files
+        link: http://example.com
+        icon: 📁
+        desc: Manage your files
+      - name: Album
+        link: http://example.com
+        icon: 📷
+        desc: View your photos
+      - name: EMail
+        link: http://example.com
+        icon: 📧
+        desc: Send and receive emails
+      - name: Calendar
+        link: http://example.com
+        icon: 📅
+        desc: Check your schedule
+      - name: Example Link
+        link: https://example.com
+        icon: evernote # material design icon name
+        desc: Link Description
+      - name: Example Link
+        link: https://example.com
+        icon: FireHydrant
+        desc: Link Description
+      - name: Example Link
+        link: https://example.com
+        icon: email
+        desc: Link Description
+      - name: Example Link
+        link: https://example.com
+        icon: MicrosoftOnenote
+        desc: Link Description
+      - name: Example Link
+        link: https://example.com
+        icon: Robber
+      - name: Example Link
+        link: https://example.com
+        icon: EvPlugType1
+      - name: Example Link
+        link: https://example.com
+        icon: FileImage
+      - name: Example Link
+        link: https://example.com
+        icon: WeatherHazy
+  - name: Bookmarks
+    categories:
+      - name: Social
+        links:
+          - name: Facebook
+            link: https://facebook.com
+            icon: 📘
+          - name: twitter
+            link: https://twitter.com
+            icon: 🐦
+          - name: instagram
+            link: https://instagram.com
+            icon: 📷
+      - name: News
+        links:
+          - name: CNN
+            link: https://cnn.com
+            icon: 📰
+          - name: BBC
+            link: https://bbc.com
+            icon: 🌍
+          - name: Reuters
+            link: https://reuters.com
+            icon: 🗞️
+      - name: Entertainment
+        links:
+          - name: YouTube
+            link: https://youtube.com
+            icon: 📺
+          - name: Netflix
+            link: https://netflix.com
+            # icon for category links is optional
+            # icon: 🎬
+          - name: Spotify
+            link: https://spotify.com
+            # icon: 🎵
+      - name: Sports
+        links:
+          - name: ESPN
+            link: https://espn.com
+            icon: ":basketball:" # 🏀 emoji name
+          - name: BBC Sport
+            link: https://bbc.com/sport
+            # Image file should be relative to pwd or config file, and must be
+            # shipped with generated html file with same relative path.
+            icon: "bbc-sport.ico"
+          - name: Sky Sports
+            link: https://skysports.com
+            icon: 🏈
+      - name: Shopping
+        links:
+          - name: Amazon
+            link: https://amazon.com
+            icon: 🛒
+          - name: eBay
+            link: https://ebay.com
+            icon: 💰
+          - name: Walmart
+            link: https://walmart.com
+            icon: 🏪

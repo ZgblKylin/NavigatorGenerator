@@ -1,2 +1,33 @@
-# NavigationPage
-Static navigation page generator
+# NavigatiorGenerator
+
+Static HTML navigation page generator.
+
+## Description
+
+Static HTML navigation page generator inspired by [soulteary/flare](https://github.com/soulteary/docker-flare).
+
+Features:
+
+- Customizable by yaml config file.
+- Blazing fast with static HTML and lazy-loading images.
+- Auto adapt to dark mode.
+- Responsive layout.
+- Emoji and Material Designe Icons support.
+
+## Requirements
+
+- Python 3
+  - emoji
+  - pillow
+  - pyyaml
+
+## Usage
+
+`python3 generator.py [-o,--output index.html] config.yaml`
+
+If `output` not given, the generated html will be printed to stdout.
+
+See `/example` for an example config file and generated html.
+
+Google Chrome lighthouse report for the generated html(hosted on Nginx with gzip compression enabled):
+![lighthouse report](example/lighthouse.png)
