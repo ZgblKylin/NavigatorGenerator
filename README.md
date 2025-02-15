@@ -18,10 +18,14 @@ Features:
 
 ## Requirements
 
-- Python 3
-  - emoji
-  - pillow
-  - pyyaml
+Python 3 with packages:
+
+- BeautifulSoup
+- emoji
+- favicon
+- pyyaml
+- regex
+- request
 
 ## Usage
 
@@ -33,3 +37,7 @@ See `/example` for an example config file and `/doc` or [GitHub Pages](https://z
 
 Google Chrome lighthouse report for the generated html(hosted on Nginx with gzip compression enabled):
 ![lighthouse report](example/lighthouse.png)
+
+## TODO
+
+- add log output

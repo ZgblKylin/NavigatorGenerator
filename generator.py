@@ -1,23 +1,25 @@
 # -*- coding: utf-8 -*-
 import argparse as argparse
-import base64
 import os
 import sys
-import tempfile
 from typing import Any, Dict, List, Optional, Tuple
 
 import emoji
+import favicon
+import regex
+import requests
 import yaml
-from PIL import Image
 
 config = []
 config_path = ''
-output_path = None
+config_dir = ''
+output_dir = ''
+output_path = ''
 
 
-def ParseConfig(config_file):
+def ParseConfig():
     try:
-        with open(config_file, 'r', encoding='utf-8') as f:
+        with open(config_path, 'r', encoding='utf-8') as f:
             global config
             config = yaml.safe_load(f)
     except Exception as e:
@@ -36,66 +38,22 @@ def LoadTemplate() -> str:
         sys.exit(1)
 
 
-def ImageToBase64(path: str) -> str:
-    try:
-        image = Image.open(path)
-        if image.size[0] >= 64 or image.size[1] >= 64:
-            ratio = min(64 / image.size[0], 64 / image.size[1])
-            image = image.resize(
-                (int(image.size[0] * ratio), int(image.size[1] * ratio)))
-            # open temp file
-            _, suffix = os.path.splitext(path)
-            temp_path = os.path.join(os.path.dirname(path), 'temp' + suffix)
-            image.save(temp_path, format=image.format)
-            content = open(temp_path, 'rb').read()
-        else:
-            content = open(path, 'rb').read()
-        return base64.b64encode(content).decode('utf-8')
-    except Exception as e:
-        print(f"Error reading image file: {e}")
-        sys.exit(1)
+def LoadIcon(lines: List[str], title: str, class_name: str, icon: str,
+             indent: str = "", optional: bool = False, max_retry: int = 10):
+    max_retry = max_retry + 1 if max_retry and max_retry > 0 else 1
 
-
-def SvgToBase64(path: str) -> str:
-    try:
-        with open(path, 'r', encoding='utf-8') as f:
-            content = f.read()
-            return base64.b64encode(content.encode('utf-8')).decode('utf-8')
-    except Exception as e:
-        print(f"Error reading svg file: {e}")
-        sys.exit(1)
-
-
-def IcoToBase64(path: str) -> str:
-    # get last image less than 64x64 in ico
-    try:
-        from PIL import Image
-        image = Image.open(path)
-        if image.size[0] >= 64 or image.size[1] >= 64:
-            ratio = min(64 / image.size[0], 64 / image.size[1])
-            image = image.resize(
-                (int(image.size[0] * ratio), int(image.size[1] * ratio)))
-            with tempfile.TemporaryFile(suffix='.ico') as temp:
-                image.save(temp, format=image.format)
-                temp.seek(0)
-                content = temp.read()
-        else:
-            content = open(path, 'rb').read()
-        return base64.b64encode(content).decode('utf-8')
-    except Exception as e:
-        print(f"Error reading ico file: {e}")
-        sys.exit(1)
-
-
-def LoadIcon(lines: List[str], class_name: str, icon: str, indent: str = ""):
+    # emoji name
     if icon.startswith(":") and icon.endswith(":"):
         lang = config['lang'].split("-")[0]
         text = emoji.emojize(icon, language=lang)
         if text == icon:
             text = emoji.emojize(icon)
-        lines.append(f'{indent}<div class="{class_name}">{text}</div>')
+        lines.append(f'{indent}<div class="{class_name}">')
+        lines.append(f'{indent}  <div class="emoji">{text}</div>')
+        lines.append(f'{indent}</div>')
         return
 
+    # emoji character
     is_emoji = False
     for _ in emoji.analyze(icon):
         is_emoji = True
@@ -105,34 +63,141 @@ def LoadIcon(lines: List[str], class_name: str, icon: str, indent: str = ""):
         lines.append(f'{indent}</div>')
         return
 
-    # Check if `icon` is existing file
-    path = icon
+    # url
+    if regex.match(r'^\w+://', icon):
+        def Request(url) -> requests.Response:
+            response = requests.Response()
+            response.status_code = 404
+            for _ in range(max_retry):
+                try:
+                    HEADERS = {
+                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) '
+                        'AppleWebKit/537.36 (KHTML, like Gecko) '
+                        'Chrome/33.0.1750.152 Safari/537.36'
+                    }
+                    response = requests.get(url,
+                                            headers=HEADERS,
+                                            allow_redirects=True)
+                    if response.status_code == 200:
+                        break
+                except Exception:
+                    pass
+            return response
+
+        if output_dir:
+            os.makedirs(os.path.join(output_dir, 'favicon'), exist_ok=True)
+
+        # Check if favicon already exists
+        if output_dir:
+            for root, _, files in os.walk(os.path.join(output_dir, 'favicon')):
+                for file in files:
+                    if file.startswith(title):
+                        path = os.path.join(root, file)
+                        path = os.path.relpath(path, output_dir)
+                        path = path.replace(os.sep, '/')
+                        lines.append(f'{indent}<div class="{class_name}">')
+                        lines.append(
+                            f'{indent}  <img src="{path}" alt="icon"/>')
+                        lines.append(f'{indent}</div>')
+                        return
+
+        response = Request(icon)
+        if response.status_code != 200:
+            if optional:
+                print(f"Warning: cannot access {title}'s icon url, "
+                      f"skip it: {icon}")
+                return
+            else:
+                print(f"Error: cannot access {title}'s icon url: {icon}")
+                sys.exit(1)
+        _, suffix = os.path.splitext(response.url)
+        if suffix.lower() not in ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico']:
+            # 'icon' is a website, not a file
+            icons = []
+            for _ in range(max_retry):
+                try:
+                    icons = favicon.get(icon)
+                    break
+                except Exception:
+                    pass
+            if not icons:
+                print(f"Error: Cannot load favicon for {title} from: {icon}")
+                sys.exit(1)
+            suffix = None
+            # prefer svg > ico > png > others
+            for format in ['svg', 'ico', 'png']:
+                for i in icons:
+                    if i.format == format:
+                        icon = i.url
+                        suffix = '.' + format
+                        break
+                if suffix:
+                    break
+            if not suffix:
+                icon = icons[0].url
+                _, suffix = os.path.splitext(icon)
+            response = Request(icon)
+            if response.status_code != 200:
+                if optional:
+                    print(f"Warning: cannot access {title}'s icon url, "
+                          f"skip it: {icon}")
+                    return
+                else:
+                    print(f"Error: cannot access {title}'s icon url: {icon}")
+                    sys.exit(1)
+        if output_dir:
+            path = os.path.join(output_dir, 'favicon', title + suffix)
+            with open(path, 'wb') as f:
+                f.write(response.content)
+        lines.append(f'{indent}<div class="{class_name}">')
+        path = os.path.relpath(path, output_dir)
+        path = path.replace(os.sep, '/')
+        lines.append(f'{indent}  <img src="{path}" alt="icon"/>')
+        lines.append(f'{indent}</div>')  # class_name
+        return
+
+    # existing file
+    path = icon.replace('/', os.sep).replace('\\', os.sep)
+    if os.path.isfile(path) and os.path.isabs(path):
+        print(f"Error: icon file for {title} should be relative path, "
+              f"got absolute path: {icon}")
     if not os.path.isfile(path):
-        dir = os.path.dirname(os.path.abspath(config_path))
-        path = os.path.join(dir, icon)
-        if output_path and not os.path.isfile(path):
-            dir = os.path.dirname(os.path.abspath(output_path))
-            path = os.path.join(dir, icon)
+        # try find relative to config dir
+        path = os.path.join(config_dir, icon).replace(
+            '/', os.sep).replace('\\', os.sep)
+        if not os.path.isfile(path) and output_path:
+            # try find relative to output dir
+            path = os.path.join(output_dir, icon).replace(
+                '/', os.sep).replace('\\', os.sep)
     if os.path.isfile(path):
         _, suffix = os.path.splitext(path)
         suffix = suffix.lower()
         lines.append(f'{indent}<div class="{class_name}">')
+        icon = icon.replace(os.sep, '/')
         lines.append(f'{indent}  <img src="{icon}" alt="icon"/>')
         lines.append(f'{indent}</div>')  # class_name
         return
 
     # Fallback to material design icons
     dir = os.path.dirname(os.path.abspath(__file__))
-    icon = ''.join(['-' + i.lower() if i.isupper()
+    name = ''.join(['-' + i.lower() if i.isupper()
                    else i for i in icon]).lstrip('-')
-    file = os.path.join(dir, 'assets', 'MaterialDesign', 'svg', icon + '.svg')
+    file = os.path.join(dir, 'assets', 'MaterialDesign', 'svg', name + '.svg')
     if not os.path.isfile(file):
         print(f"Error: {icon} is not a valid icon")
         sys.exit(1)
     lines.append(f'{indent}<div class="{class_name}">')
-    with open(file, 'r', encoding='utf-8') as f:
-        text = f.read()
-        lines.append(f'{indent}  {text.strip()}')
+    try:
+        with open(file, 'r', encoding='utf-8') as f:
+            text = f.read()
+            lines.append(f'{indent}  {text.strip()}')
+    except Exception:
+        if optional:
+            print(f"Warning: unknwon icon for {title}: {icon}")
+            return
+        else:
+            print(f"Error: unknwon icon for {title}: {icon}")
+            sys.exit(1)
     lines.append(f'{indent}</div>')  # class_name
     return
 
@@ -205,7 +270,7 @@ def GenerateHtml(template: str) -> str:
                 lines.append(
                     f'  <a class="button-item" {target} href="{link}" title="{tooltip}">')
                 if icon:
-                    LoadIcon(lines, 'icon', icon, indent="    ")
+                    LoadIcon(lines, name, 'icon', icon, indent="    ")
                 lines.append(f'    <div class="text">')
                 lines.append(f'      <div class="title">{name}</div>')
                 lines.append(f'      <div class="description">{desc}</div>')
@@ -235,7 +300,8 @@ def GenerateHtml(template: str) -> str:
                     lines.append(
                         f'  <a class="category-item" {target} href="{link}" title="{tooltip}">')
                     if icon:
-                        LoadIcon(lines, 'category-icon', icon, indent="    ")
+                        LoadIcon(lines, name, 'category-icon',
+                                 icon, indent="    ", optional=True)
                     lines.append(f'    <span>{name}</span>')
                     lines.append(f'  </a>')
                     lines.append(f'</li>')
@@ -304,10 +370,12 @@ if __name__ == "__main__":
     if not args.config:
         print("Error: config file is required")
         sys.exit(1)
-    config_path = args.config
-    output_path = args.output
+    config_path = os.path.abspath(args.config)
+    output_path = os.path.abspath(args.output)
+    config_dir = os.path.dirname(config_path)
+    output_dir = os.path.dirname(output_path)
 
-    ParseConfig(args.config)
+    ParseConfig()
     template = LoadTemplate()
     html = GenerateHtml(template)
     OutputHtml(html)

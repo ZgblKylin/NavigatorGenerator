@@ -16,10 +16,14 @@
 
 ## 要求
 
-- Python 3
-  - emoji
-  - pillow
-  - pyyaml
+Python 3，包列表：
+
+- BeautifulSoup
+- emoji
+- favicon
+- pyyaml
+- regex
+- request
 
 ## 使用方式
 
@@ -31,3 +35,7 @@
 
 生成html的Google Chrome lighthouse报告（使用Nginx托管，启用gzip压缩支持）：
 ![lighthouse报告](example/lighthouse.png)
+
+## TODO
+
+- 增加日志输出

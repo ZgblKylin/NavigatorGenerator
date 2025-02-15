@@ -57,60 +57,64 @@ groups:
         links:
           - name: Facebook
             link: https://facebook.com
-            icon: 📘
+            # load icon from network file, save to output_dir/favicon/name.ext
+            icon: https://facebook.com/favicon.ico
             # optional description
             desc: Connect with friends, family and communities of people who share your interests.
-          - name: twitter
+          - name: Twitter
             link: https://twitter.com
-            icon: 🐦
+            # load favicon from website, save to output_dir/favicon/name.ext
+            icon: https://twitter.com
           - name: instagram
             link: https://instagram.com
-            icon: 📷
+            # icon for category links is optional
+            # icon: 📷
       - name: News
         links:
           - name: CNN
             link: https://cnn.com
-            icon: 📰
+            # Image file must be relative path to existing file.
+            # The path could be relative to current dir, or relative config file
+            # dir, or relative to dest html dir, and must be shipped with
+            # generated html file with same relative path.
+            icon: favicon/CNN.ico
           - name: BBC
             link: https://bbc.com
-            icon: 🌍
+            # emoji name
+            icon: ":newspaper:" # 📰
           - name: Reuters
             link: https://reuters.com
-            icon: 🗞️
+            icon: https://www.reuters.com/favicon.ico
       - name: Entertainment
         links:
           - name: YouTube
             link: https://youtube.com
-            icon: 📺
+            icon: https://youtube.com
           - name: Netflix
             link: https://netflix.com
-            # icon for category links is optional
-            # icon: 🎬
+            icon: https://netflix.com
           - name: Spotify
             link: https://spotify.com
-            # icon: 🎵
+            icon: https://open.spotify.com/favicon.ico
       - name: Sports
         links:
           - name: ESPN
             link: https://espn.com
-            icon: ":basketball:" # 🏀 emoji name
+            icon: https://espn.com
           - name: BBC Sport
             link: https://bbc.com/sport
-            # Image file should be existing file path relative to cwd or config
-            # file or dest html, and must be shipped with generated html file
-            # with same relative path.
-            icon: "bbc-sport.ico"
+            icon: https://bbc.com/sport
           - name: Sky Sports
             link: https://skysports.com
-            icon: 🏈
+            icon: https://skysports.com
       - name: Shopping
         links:
           - name: Amazon
             link: https://amazon.com
-            icon: 🛒
+            icon: https://amazon.com
           - name: eBay
             link: https://ebay.com
-            icon: 💰
+            icon: https://ebay.com
           - name: Walmart
             link: https://walmart.com
-            icon: 🏪
+            icon: https://walmart.com
