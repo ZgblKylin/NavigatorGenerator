@@ -73,11 +73,11 @@ groups:
         links:
           - name: CNN
             link: https://cnn.com
-            # Image file must be relative path to existing file.
-            # The path could be relative to current dir, or relative config file
-            # dir, or relative to dest html dir, and must be shipped with
-            # generated html file with same relative path.
-            icon: favicon/CNN.ico
+            # Image file should be existing file with absolute path,
+            # or relative to current dir, or relative config file dir, 
+            # or relative to dest html dir.
+            # The file will be copied to output_dir/favicon/
+            icon: CNN.ico
           - name: BBC
             link: https://bbc.com
             # emoji name

@@ -41,6 +41,9 @@ def LoadTemplate() -> str:
 def LoadIcon(lines: List[str], title: str, class_name: str, icon: str,
              indent: str = "", optional: bool = False, max_retry: int = 10):
     max_retry = max_retry + 1 if max_retry and max_retry > 0 else 1
+    favicon_dir = os.path.join(output_dir, 'favicon')
+    if output_dir:
+        os.makedirs(favicon_dir, exist_ok=True)
 
     # emoji name
     if icon.startswith(":") and icon.endswith(":"):
@@ -84,12 +87,9 @@ def LoadIcon(lines: List[str], title: str, class_name: str, icon: str,
                     pass
             return response
 
-        if output_dir:
-            os.makedirs(os.path.join(output_dir, 'favicon'), exist_ok=True)
-
         # Check if favicon already exists
         if output_dir:
-            for root, _, files in os.walk(os.path.join(output_dir, 'favicon')):
+            for root, _, files in os.walk(favicon_dir):
                 for file in files:
                     if file.startswith(title):
                         path = os.path.join(root, file)
@@ -146,9 +146,12 @@ def LoadIcon(lines: List[str], title: str, class_name: str, icon: str,
                     print(f"Error: cannot access {title}'s icon url: {icon}")
                     sys.exit(1)
         if output_dir:
-            path = os.path.join(output_dir, 'favicon', title + suffix)
+            path = os.path.join(favicon_dir, title + suffix)
             with open(path, 'wb') as f:
                 f.write(response.content)
+        else:
+            # Skip save icon file since output_file not given
+            pass
         lines.append(f'{indent}<div class="{class_name}">')
         path = os.path.relpath(path, output_dir)
         path = path.replace(os.sep, '/')
@@ -158,22 +161,37 @@ def LoadIcon(lines: List[str], title: str, class_name: str, icon: str,
 
     # existing file
     path = icon.replace('/', os.sep).replace('\\', os.sep)
-    if os.path.isfile(path) and os.path.isabs(path):
-        print(f"Error: icon file for {title} should be relative path, "
-              f"got absolute path: {icon}")
+    if os.path.isfile(path):
+        # absolute path or realtive to pwd
+        pass
     if not os.path.isfile(path):
-        # try find relative to config dir
+        # try relative to config file directory
         path = os.path.join(config_dir, icon).replace(
             '/', os.sep).replace('\\', os.sep)
         if not os.path.isfile(path) and output_path:
-            # try find relative to output dir
+            # try relative to output file directory
             path = os.path.join(output_dir, icon).replace(
                 '/', os.sep).replace('\\', os.sep)
     if os.path.isfile(path):
-        _, suffix = os.path.splitext(path)
-        suffix = suffix.lower()
-        lines.append(f'{indent}<div class="{class_name}">')
+        # found icon file
+        if output_dir:
+            dest = os.path.join(favicon_dir, os.path.basename(path))
+            if os.path.abspath(path) != os.path.abspath(dest):
+                # copy to favicon_dir
+                try:
+                    with open(path, 'rb') as f:
+                        with open(dest, 'wb') as d:
+                            d.write(f.read())
+                except Exception as e:
+                    print(
+                        f"Error copying {title}'s icon file from {path} to {dest}: {e}")
+                    sys.exit(1)
+            icon = os.path.relpath(dest, output_dir)
+        else:
+            # Skip copy icon file since output_file not given
+            pass
         icon = icon.replace(os.sep, '/')
+        lines.append(f'{indent}<div class="{class_name}">')
         lines.append(f'{indent}  <img src="{icon}" alt="icon"/>')
         lines.append(f'{indent}</div>')  # class_name
         return
